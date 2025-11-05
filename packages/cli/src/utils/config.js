@@ -120,6 +120,32 @@ function getApiUrl() {
   return get('apiUrl');
 }
 
+/**
+ * Get Web URL for task viewing
+ * @returns {string} Web URL
+ */
+function getWebUrl() {
+  // Allow override via environment variable
+  if (process.env.VIBECOIN_WEB_URL) {
+    return process.env.VIBECOIN_WEB_URL;
+  }
+
+  const apiUrl = getApiUrl();
+
+  // For production: convert api.vibecoin.sh -> tasks.vibecoin.sh
+  if (apiUrl.includes('api.vibecoin.sh')) {
+    return apiUrl.replace('api.vibecoin.sh', 'tasks.vibecoin.sh');
+  }
+
+  // For localhost development: use same host
+  if (apiUrl.includes('localhost') || apiUrl.includes('127.0.0.1')) {
+    return apiUrl;
+  }
+
+  // Default fallback
+  return apiUrl;
+}
+
 module.exports = {
   get,
   set,
@@ -132,5 +158,6 @@ module.exports = {
   getUser,
   setUser,
   clearAuth,
-  getApiUrl
+  getApiUrl,
+  getWebUrl
 };

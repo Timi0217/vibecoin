@@ -14,6 +14,7 @@ const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const earningsRoutes = require('./routes/earnings');
 const payoutRoutes = require('./routes/payouts');
+const webRoutes = require('./routes/web');
 
 // Import middleware
 const { notFound, errorHandler } = require('./middleware/errorHandler');
@@ -25,7 +26,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:", "http:"],
+      mediaSrc: ["'self'", "https:", "http:"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"]
+    }
+  }
+}));
 
 // CORS
 app.use(cors({
@@ -61,6 +72,9 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development'
   });
 });
+
+// Web routes (task viewing pages)
+app.use('/', webRoutes);
 
 // API routes
 app.use('/api/auth', authRoutes);

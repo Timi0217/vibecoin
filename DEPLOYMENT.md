@@ -8,9 +8,18 @@ Guide for deploying VibeCoin to production.
 - [ ] Environment variables configured
 - [ ] Database backups enabled
 - [ ] SSL/TLS certificates ready
-- [ ] Domain name configured
+- [ ] Domain name configured (api.vibecoin.sh and tasks.vibecoin.sh)
 - [ ] Monitoring set up
 - [ ] Error tracking enabled
+
+## Architecture Overview
+
+VibeCoin now consists of two services:
+
+1. **API Server** (`api.vibecoin.sh`): Backend API for authentication, tasks, and earnings
+2. **Task Viewer** (`tasks.vibecoin.sh`): Web interface for viewing image/video tasks
+
+The backend serves both API endpoints and web pages from the same application.
 
 ## Deployment Options
 
@@ -69,6 +78,23 @@ Railway provides easy deployment with built-in PostgreSQL.
 7. **Get URL**
    ```bash
    railway domain
+   ```
+
+8. **Configure Custom Domains**
+
+   You can use the same backend deployment for both domains:
+
+   - In Railway dashboard, add custom domains:
+     - `api.vibecoin.sh` (for API)
+     - `tasks.vibecoin.sh` (for task viewing)
+
+   - Both domains point to the same backend service
+   - The backend automatically serves web pages at `/t/{task_id}` routes
+
+   DNS Configuration:
+   ```
+   api.vibecoin.sh    → CNAME → your-app.railway.app
+   tasks.vibecoin.sh  → CNAME → your-app.railway.app
    ```
 
 ### Option 2: Render
@@ -153,9 +179,19 @@ flyctl deploy
    Edit `packages/cli/src/utils/config.js`:
    ```javascript
    defaults: {
-     apiUrl: 'https://your-backend-url.railway.app',
+     apiUrl: 'https://api.vibecoin.sh',
      // ...
    }
+   ```
+
+   The CLI automatically converts `api.vibecoin.sh` to `tasks.vibecoin.sh` for task viewing.
+
+4. **Environment Variables**
+
+   CLI supports these environment variables for development:
+   ```bash
+   VIBECOIN_API_URL=https://api.vibecoin.sh
+   VIBECOIN_WEB_URL=https://tasks.vibecoin.sh  # Optional override
    ```
 
 ### Publishing to npm

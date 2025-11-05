@@ -5,8 +5,10 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
+const open = require('open');
 const authService = require('../services/auth');
 const api = require('../services/api');
+const config = require('../utils/config');
 const { displayTask, displayTaskResult, displayError, displayWarning } = require('../ui/display');
 
 /**
@@ -33,8 +35,31 @@ async function processTask() {
       return false;
     }
 
-    // Display task
-    displayTask(task);
+    // Construct task page URL
+    const webUrl = config.getWebUrl();
+    const taskUrl = `${webUrl}/t/${task.id}`;
+
+    // Open browser with task page
+    console.log(chalk.cyan('\n🌐 Opening task in browser...\n'));
+    try {
+      await open(taskUrl);
+    } catch (err) {
+      console.log(chalk.yellow(`⚠️  Could not open browser automatically. View task at: ${taskUrl}\n`));
+    }
+
+    // Display task summary in terminal
+    console.log(chalk.bold.white('Task Summary:'));
+    console.log(chalk.dim('─'.repeat(50)));
+    console.log(chalk.white(`Question: ${task.question}`));
+    if (task.options && task.options.length > 0) {
+      console.log(chalk.dim('\nOptions:'));
+      task.options.forEach((option, index) => {
+        const letter = String.fromCharCode(65 + index); // A, B, C, D...
+        console.log(chalk.dim(`  ${letter}) ${option}`));
+      });
+    }
+    console.log(chalk.dim('─'.repeat(50)));
+    console.log(chalk.cyan('\n👆 Check your browser to view the full task with image/video\n'));
 
     // Get user answer
     const { answer } = await inquirer.prompt([

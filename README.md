@@ -8,7 +8,8 @@ VibeCoin is a CLI tool that enables developers to earn real money by completing 
 
 ## Features
 
-- 🚀 **CLI-first experience** - Never leave your terminal
+- 🚀 **CLI-first experience** - Answer in terminal, view in browser
+- 🌐 **Visual task viewing** - Images and videos open in your browser automatically
 - 💰 **Real earnings** - 1 VibeCoin = $0.25 USD
 - ⚡ **Quick tasks** - Complete tasks in 20-60 seconds
 - 📊 **Track earnings** - Monitor your progress and stats
@@ -37,6 +38,18 @@ vibecoin status
 # Request payout (minimum $10)
 vibecoin payout
 ```
+
+### How It Works
+
+When you run `vibecoin wait`, the CLI will:
+
+1. 🌐 **Open your browser** - Task with image/video opens automatically at `tasks.vibecoin.sh`
+2. 👀 **View the task** - See images or videos in a clean, full-screen interface
+3. ⌨️ **Answer in terminal** - Return to your terminal and type your answer
+4. ✅ **Get instant feedback** - See if you were correct and how many coins you earned
+5. 🔄 **Repeat** - Get more tasks during your wait time
+
+This hybrid approach gives you the best of both worlds: visual content in the browser where it looks great, and fast input in the terminal where you're already working.
 
 ## Project Structure
 
