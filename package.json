@@ -1,0 +1,27 @@
+{
+  "name": "vibecoin-monorepo",
+  "version": "1.0.0",
+  "description": "VibeCoin - Earn money while you code",
+  "private": true,
+  "workspaces": [
+    "packages/cli",
+    "packages/backend"
+  ],
+  "scripts": {
+    "cli": "npm run --workspace=packages/cli",
+    "backend": "npm run --workspace=packages/backend",
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces"
+  },
+  "keywords": [
+    "cli",
+    "earn",
+    "tasks",
+    "vibecoin"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
